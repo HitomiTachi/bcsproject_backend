@@ -17,7 +17,7 @@ import com.managerbcs.bcsproject_backend.entity.AssignmentSubmission;
 
 @Configuration
 public class MethodRestConfig implements RepositoryRestConfigurer {
-
+    private String url = "http://localhost:3000";
     @Autowired
     private EntityManager entityManager;
 
@@ -30,7 +30,10 @@ public class MethodRestConfig implements RepositoryRestConfigurer {
                         .map(Type::getJavaType)
                         .toArray(Class[]::new)
         );
-
+        // CORS configuration
+                cors.addMapping("/**")
+                        .allowedOrigins(url)
+                        .allowedMethods("GET", "POST", "PUT", "DELETE");
         // Chặn tất cả các phương thức ghi đối với ClassEntity (lớp học) → Chỉ được phép GET
         HttpMethod[] readOnlyMethods = {
                 HttpMethod.POST,
