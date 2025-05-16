@@ -1,36 +1,65 @@
 package com.managerbcs.bcsproject_backend.entity;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
-@Data
+
 @Entity
 @Table(name = "classes")
+@Data
 public class ClassEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "class_id")
     private Integer classId;
 
-    @Column(nullable = false)
+    @Column(name = "class_code", unique = true, nullable = false)
+    private String classCode;
+
+    @Column(name = "class_name", nullable = false)
     private String className;
 
-    @ManyToOne
-    @JoinColumn(name = "teacher_id")
-    private User teacher;
+    @Column(name = "major")
+    private String major;
 
+    @Column(name = "course")
+    private String course;
 
-    @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ClassMember> members;
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH
+    })
+    @JoinColumn(name = "lecturer_id")
+    private User lecturer;
 
-    @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Assignment> assignments;
+    // Relationships
+    @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY, cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH
+    })
+    private List<ClassMember> classMembers;
 
-    @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Post> posts;
+    @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY, cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH
+    })
+    private List<ClassLeader> leaders;
 
-    @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Group> groups;
-    // Getters and Setters
+    @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY, cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH
+    })
+    private List<Task> tasks;
+
+    @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY, cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH
+    })
+    private List<Notification> notifications;
+
+    @OneToMany(mappedBy = "classEntity", fetch = FetchType.LAZY, cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH
+    })
+    private List<Statistics> statistics;
 }
-

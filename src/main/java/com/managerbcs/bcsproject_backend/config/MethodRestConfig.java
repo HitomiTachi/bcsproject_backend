@@ -11,9 +11,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import com.managerbcs.bcsproject_backend.entity.User;
 import com.managerbcs.bcsproject_backend.entity.ClassEntity;
-import com.managerbcs.bcsproject_backend.entity.Account;
-import com.managerbcs.bcsproject_backend.entity.Assignment;
-import com.managerbcs.bcsproject_backend.entity.AssignmentSubmission;
 
 @Configuration
 public class MethodRestConfig implements RepositoryRestConfigurer {
@@ -41,15 +38,15 @@ public class MethodRestConfig implements RepositoryRestConfigurer {
                 HttpMethod.PATCH,
                 HttpMethod.DELETE
         };
-        disableHttpMethods(ClassEntity.class, config, readOnlyMethods);
+        disableHttpMethods(Class.class, config, readOnlyMethods);
 
         // Chỉ chặn xoá người dùng (không cho phép DELETE)
         HttpMethod[] onlyBlockDelete = { HttpMethod.DELETE };
         disableHttpMethods(User.class, config, onlyBlockDelete);
 
         // Chặn chỉnh sửa và xoá AssignmentSubmission (nộp bài)
-        HttpMethod[] noEditOrDelete = { HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE };
-        disableHttpMethods(AssignmentSubmission.class, config, noEditOrDelete);
+//        HttpMethod[] noEditOrDelete = { HttpMethod.PUT, HttpMethod.PATCH, HttpMethod.DELETE };
+//        disableHttpMethods(AssignmentSubmission.class, config, noEditOrDelete);
 
         // Nếu cần bảo vệ thêm entity nào, có thể thêm vào dưới đây
         // disableHttpMethods(Role.class, config, readOnlyMethods);

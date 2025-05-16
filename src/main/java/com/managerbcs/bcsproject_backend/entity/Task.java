@@ -10,31 +10,48 @@ import java.util.List;
 @Entity
 @Table(name = "tasks")
 public class Task {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "task_id")
     private Integer taskId;
 
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH
     })
-    @JoinColumn(name = "project_id")
-    private Project project;
+    @JoinColumn(name = "class_id", nullable = false)
+    private Class classObj;
 
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH
+    })
+    @JoinColumn(name = "assigned_by", nullable = false)
+    private User assigner;
 
+    @Column(name = "title", nullable = false)
     private String title;
+
+    @Column(name = "description")
     private String description;
 
-    @Enumerated(EnumType.STRING)
-    private Status status = Status.Pending;
+    @Column(name = "due_date")
+    private LocalDateTime dueDate;
 
-    public enum Status {
-        Pending, InProgress, Completed
-    }
+    @Column(name = "priority")
+    private String priority;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime createdAt;
+    @Column(name = "attachment")
+    private String attachment;
 
-    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Column(name = "created_at")
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    // Relationships
+    @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH
+    })
     private List<TaskAssignment> assignments;
 
     // Getters and Setters

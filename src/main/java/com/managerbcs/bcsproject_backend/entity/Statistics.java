@@ -1,17 +1,16 @@
 package com.managerbcs.bcsproject_backend.entity;
+
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-@Data
 @Entity
-@Table(name = "class_members")
-public class ClassMember {
+@Table(name = "statistics")
+@Data
+public class Statistics {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "class_member_id")
-    private Integer classMemberId;
+    @Column(name = "statistic_id")
+    private Integer statisticId;
 
     @ManyToOne(cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
@@ -27,10 +26,12 @@ public class ClassMember {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "is_leader")
-    private Boolean isLeader = false;
-    // Getters and Setters
+    @Column(name = "total_tasks")
+    private Integer totalTasks = 0;
+
+    @Column(name = "completed_tasks")
+    private Integer completedTasks = 0;
+
+    @Column(name = "average_score")
+    private Float averageScore = 0.0f;
 }
-
-
-
